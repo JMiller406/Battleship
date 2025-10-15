@@ -18,7 +18,7 @@ public class Menu {
         }
     }
 
-    // display() shows the menu and gets user choice
+    // displayMenu() shows the menu and gets user choice
     public MenuAction displayMenu() {
         System.out.println("=== Battleship Menu ===");
         System.out.println("1. Start Game");
@@ -28,7 +28,7 @@ public class Menu {
         return MenuAction.fromInt(choice);
     }
 
-    // start() delegates to display()
+    // start() delegates to displayMenu()
     public MenuAction start() {
         return displayMenu();
     }

@@ -1,5 +1,7 @@
-public class CellState {
-
-    public static CellState EMPTY;
-
+public enum CellState {
+    EMPTY,
+    HIT,
+    MISS,
+    SUNK,
+    OCCUPIED;
 }

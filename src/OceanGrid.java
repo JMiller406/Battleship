@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 import java.util.List;
 
 public class OceanGrid extends Grid {
     private List<Ship> ships;
 
+=======
+public class OceanGrid extends Grid {
+>>>>>>> 808d4ba4dcfb764a43d628835d7b14e16d06ef5b
     public OceanGrid() {
         super();
     }
