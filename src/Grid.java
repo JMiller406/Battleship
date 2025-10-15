@@ -13,58 +13,61 @@ public abstract class Grid {
         }
     }
 
-    // Return a string for the full grid
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
+@Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+
+    // Column headers
+    sb.append("    "); // 4 spaces for row labels
+    for (int col = 1; col <= 10; col++) {
+        sb.append(String.format(" %2d ", col)); // width = 3 chars per column
+    }
+    sb.append("\n");
+
+    // Top border
+    sb.append(getBorder());
+
+    // Rows
+    for (int row = 0; row < 10; row++) {
+        sb.append(getRow(row));
         sb.append(getBorder());
-        sb.append(getHeader());
-        for (int row = 0; row < 10; row++) {
-            sb.append(getRow(row));
-            sb.append(getBorder());
-        }
-        return sb.toString();
     }
 
-    // Methods to print grid with headers and borders
-    private String getHeader() {
-        StringBuilder sb = new StringBuilder("|   "); 
-        for (int col = 1; col <= 10; col++) {
-            sb.append("| ").append(col < 10 ? " " + col : col);
-            } // ternary operator for formatting ? = if : else
-            sb.append("| \n");
-            return sb.toString();
-        }
-
-    // Return a string for the top/bottom border
-    private String getBorder() {
-        StringBuilder sb = new StringBuilder("+");
-        for (int col = 0; col < 11; col++) {
-            sb.append("---+");
-        } 
-        sb.append('\n');
-        return sb.toString();
-    }
-
-    // Return a string for a single row
-    private String getRow(int row) {
-        StringBuilder sb = new StringBuilder();
-        // Row label
-        char rowLabel = (char) ('A' + row); // Converting 0-9 to A-J
-        sb.append("| ").append(rowLabel).append(" ");
-        for (int col = 1; col < 10; col++) {
-            Cell cell = cells[row][col];
-            sb.append("| ").append(cell.displayChar()).append(' ');
-        }
-        sb.append("|\n");
-        return sb.toString();
-    }
-
-    
-
+    return sb.toString();
 }
 
-// StringBuilder is used for efficient string concatentation. The benefit of using StringBuilder over regular string concatenation is that it is more memory efficient and faster, especially when building large strings in loops. Regular string concatenation creates multiple immutable string objects, which can lead to increased memory usage and slower performance due to the overhead of creating and garbage collecting these objects. StringBuilder, on the other hand, maintains a mutable array of characters that can be modified in place, reducing the need for creating new string objects and improving performance.
+private String getBorder() {
+    StringBuilder sb = new StringBuilder("   +"); // 3 spaces for row labels
+    for (int col = 0; col < 10; col++) {
+        sb.append("---+");
+    }
+    sb.append("\n");
+    return sb.toString();
+}
 
-// Testing
-        
+private String getRow(int row) {
+    StringBuilder sb = new StringBuilder();
+    char rowLabel = (char) ('A' + row);
+    sb.append(String.format(" %c |", rowLabel)); // row letter with separator
+
+    for (int col = 0; col < 10; col++) {
+        Cell cell = cells[row][col];
+        sb.append(String.format(" %s |", cell.displayChar())); // each cell 3 chars wide
+    }
+    sb.append("\n");
+    return sb.toString();
+}
+
+       public Cell cellAtCoordinate(Coordinate coord) {
+        if (coord == null) {
+            throw new IllegalArgumentException("Coordinate cannot be null");
+        }
+        int r = coord.getRow();
+        int c = coord.getCol();
+        if (r < 0 || r >= cells.length || c < 0 || c >= cells[0].length) {
+            throw new IllegalArgumentException("Coordinate out of bounds: " + coord);
+        }
+        return cells[r][c];
+    }
+   
+}
