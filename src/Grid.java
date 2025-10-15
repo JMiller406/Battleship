@@ -65,4 +65,6 @@ public abstract class Grid {
 }
 
 // StringBuilder is used for efficient string concatentation. The benefit of using StringBuilder over regular string concatenation is that it is more memory efficient and faster, especially when building large strings in loops. Regular string concatenation creates multiple immutable string objects, which can lead to increased memory usage and slower performance due to the overhead of creating and garbage collecting these objects. StringBuilder, on the other hand, maintains a mutable array of characters that can be modified in place, reducing the need for creating new string objects and improving performance.
+
+// Testing
         
