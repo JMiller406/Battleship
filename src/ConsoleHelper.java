@@ -15,4 +15,26 @@ public class ConsoleHelper {
         }
         return inStr;
     }
+
+        public static int getNumberBetween(final String prompt, int min, int max){
+        while (true) {
+            String input = getInput(prompt);
+            int retVal = 0;
+            try {
+                retVal = Integer.parseInt(input);
+            } catch (Exception e) {
+                System.out.println(String.format("Invalid entry.  Please enter a number between %d and %d", min, max));
+                continue;
+            }
+
+            // entry was an integer
+            if(retVal < min || retVal > max){
+                System.out.println(String.format("Invalid entry.  Please enter a number between %d and %d", min, max));
+                continue;
+            }
+
+            // entry passed all tests
+            return retVal;
+        }
+    }
 }

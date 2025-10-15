@@ -1,5 +1,25 @@
 public class App {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+
+        while (true) {
+            Menu.MenuAction action = menu.displayMenu();
+            switch (action) {
+                case START_GAME:
+                    GameConfiguration.configureAndRunGame();
+                    break;
+                case TUTORIAL:
+                    // Menu owns the tutorial presentation. App just routes
+                    menu.startTutorial();
+                    break;
+                case EXIT:
+                    System.out.println("Exiting program.");
+                    return;
+                case INVALID:
+                default:
+                    System.out.println("Invalid selection. Try again.");
+                    break;
+            }
+        }
     }
 }
