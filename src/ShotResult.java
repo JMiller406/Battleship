@@ -1,25 +1,37 @@
-import java.util.List;
-
-public enum ShotResult {
-
+public class ShotResult {
+    public enum ResultType {
     HIT,
     MISS,
     SUNK;
+    }
+    private ResultType type;
+    private Coordinate shot;
+    private String shipName;
 
-    public void setShipType(){
-    //Sets the ships type
+    public ShotResult(ResultType type, Coordinate shot) {
+        this.type = type;
+        this.shot = shot;
     }
 
-    public void getShipType(){
-    // Gets the ship type
+    public ResultType getType() {
+        return type;
     }
 
-    public void setCoordinate(){
-    // Sets the ships coordinates
+    public Coordinate getShot() {
+        return shot;
     }
 
-    public void getCoordinate(){
-    // Gets the ships coordinates
-    }  
+    public void setShot(Coordinate shot) {
+        this.shot = shot;
+    }
+
+    public String getShipName() {
+        return shipName;
+    }
+
+    public void setShipName(String shipName) {
+        this.shipName = shipName;
+    }
+    
 }
 
