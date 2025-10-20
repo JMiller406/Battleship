@@ -69,5 +69,9 @@ private String getRow(int row) {
         }
         return cells[r][c];
     }
+
+    public void printGrid() {
+        System.out.print(this.toString());
+    }
    
 }

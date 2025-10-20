@@ -4,20 +4,31 @@ public class Player {
     OceanGrid oceanGrid;
     int hitCount; //the amount of hits call it game
     
-    
-    protected static  void placeShips() {
+    // constructor used by GameConfiguration
+    public Player(String name) {
+        this.name = (name == null || name.isEmpty()) ? "Player" : name;
+        this.targetGrid = new TargetGrid();
+        this.oceanGrid = new OceanGrid();
+        this.hitCount = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    protected void placeShips() {
 
     }
 
-    protected static void takeShot() {
+    protected void takeShot() {
 
     }
 
-    protected static void receiveShot() {
+    protected void receiveShot() {
 
     }
 
-    protected static void receiveShotResult() {
+    protected void receiveShotResult() {
 
     }
 
@@ -25,6 +36,14 @@ public class Player {
 
         return false;
 
+    }
+
+    public OceanGrid getOceanGrid() {
+        return oceanGrid;
+    }
+
+    public TargetGrid getTargetGrid() {
+        return targetGrid;
     }
 
 

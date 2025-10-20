@@ -6,8 +6,10 @@ public class App {
             Menu.MenuAction action = menu.displayMenu();
             switch (action) {
                 case START_GAME:
-                    GameConfiguration.configureAndRunGame();
-                    break;
+                    Game game = GameConfiguration.configure();
+                    if (game != null) {
+                        game.start();
+                    }
                 case TUTORIAL:
                     // Menu owns the tutorial presentation. App just routes
                     menu.startTutorial();
