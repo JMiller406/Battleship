@@ -1,9 +1,5 @@
 public class TargetGrid extends Grid {
-<<<<<<< HEAD
     public TargetGrid(){
-=======
-    public TargetGrid() {
->>>>>>> 808d4ba4dcfb764a43d628835d7b14e16d06ef5b
         super();
     }
 

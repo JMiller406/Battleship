@@ -38,6 +38,14 @@ public class Player {
 
     }
 
+    public OceanGrid getOceanGrid() {
+        return oceanGrid;
+    }
+
+    public TargetGrid getTargetGrid() {
+        return targetGrid;
+    }
+
 
 
 

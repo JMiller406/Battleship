@@ -37,6 +37,20 @@ public class Game {
 
         // Placeholder for the actual game loop — press Enter to return to menu
         ConsoleHelper.getInput("Press Enter to end demo game and return to the menu...");
+
+         System.out.println(p1Name + "'s Ocean:");
+        if (player1 != null && player1.getOceanGrid() != null) {
+            player1.getOceanGrid().printGrid();
+        } else {
+            System.out.println("(no ocean grid available)");
+        }
+
+        System.out.println("\n" + p1Name + "'s Target:");
+        if (player1 != null && player1.getTargetGrid() != null) {
+            player1.getTargetGrid().printGrid();
+        } else {
+            System.out.println("(no target grid available)");
+        }
     }
 
 }
