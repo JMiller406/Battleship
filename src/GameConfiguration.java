@@ -7,11 +7,15 @@ public class GameConfiguration {
         String p1Name = getNameForPlayerNumber(1);
         String p2Name = (players == 2) ? getNameForPlayerNumber(2) : "Computer";
         int aiDifficulty = (players ==1) ? askAIDifficulty() : -1;
+        String aiDifficultyName = (aiDifficulty > 0) ? difficultyName(aiDifficulty) : "N/A";
+        if (players == 1 && aiDifficulty > 0) {
+            System.out.println("Selected AI difficulty: " + aiDifficultyName);
+        }
         int placementPreference = askHowToPlaceShip(); // 1 = auto, 2 = manual
 
         System.out.println("\nConfiguration Summary:");
         System.out.println("Players: " + players + " (" + p1Name + (players == 2 ? " vs " + p2Name : " vs AI") + ")");
-        if (players == 1) System.out.println("AI Difficulty: " + aiDifficulty);
+    if (players == 1) System.out.println("AI Difficulty: " + aiDifficultyName);
         System.out.println("Ship Placement: " + (placementPreference == 1 ? "Auto" : "Manual"));
 
         ConsoleHelper.getInput("Press Enter to continue...");
@@ -26,11 +30,17 @@ public class GameConfiguration {
     }
 
     public static int askOneOrTwoPlayers() {
-        return ConsoleHelper.getNumberBetween("Players (1 = vs AI, 2 = vs Player): ", 1, 2);
+        System.out.println("Players:");
+        System.out.println("1. vs AI");
+        System.out.println("2. vs Player");
+        return ConsoleHelper.getNumberBetween("Enter your choice (1-2): ", 1, 2);
     }
 
     public static int askHowToPlaceShip() {
-        return ConsoleHelper.getNumberBetween("Placement (1 = Auto, 2 = Manual): ", 1, 2);
+        System.out.println("Ship placement:");
+        System.out.println("1. Auto");
+        System.out.println("2. Manual");
+        return ConsoleHelper.getNumberBetween("Enter your choice (1-2): ", 1, 2);
     }
 
     public static String getNameForPlayerNumber(int number) {
@@ -40,12 +50,25 @@ public class GameConfiguration {
     }
 
     public static int askAIDifficulty() {
-        return ConsoleHelper.getNumberBetween("AI difficulty (1 = Easy, 2 = Normal, 3 = Hard): ", 1, 3);
+        System.out.println("AI difficulty:");
+        System.out.println("1. Easy");
+        System.out.println("2. Normal");
+        System.out.println("3. Hard");
+        return ConsoleHelper.getNumberBetween("Enter your choice (1-3): ", 1, 3);
     }
 
 
 
 
 
+
+    private static String difficultyName(int difficulty) {
+        switch (difficulty) {
+            case 1: return "Easy";
+            case 2: return "Normal";
+            case 3: return "Hard";
+            default: return "Unknown";
+        }
+    }
 
 }

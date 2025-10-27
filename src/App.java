@@ -10,6 +10,7 @@ public class App {
                     if (game != null) {
                         game.start();
                     }
+                    break;
                 case TUTORIAL:
                     // Menu owns the tutorial presentation. App just routes
                     menu.startTutorial();

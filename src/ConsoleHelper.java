@@ -13,6 +13,8 @@ public class ConsoleHelper {
         } catch (final IOException e) {
             System.out.println("Error reading from user");
         }
+        // Add a blank line after the user input so prompts don't look bunched
+        System.out.println();
         return inStr;
     }
 
