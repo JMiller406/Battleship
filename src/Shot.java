@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Shot {
     private int row;
     private int column;
@@ -48,9 +46,8 @@ public class Shot {
 
     // Static method to prompt user for a shot coordinate and return a Shot object
     public static Shot getShotInput() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your shot (e.g., B5): ");
-        String input = scanner.nextLine();
+        String input = ConsoleHelper.getInput(System.in.toString());
 
         try {
             return new Shot(input);
