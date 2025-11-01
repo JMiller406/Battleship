@@ -38,18 +38,20 @@ public class Game {
         // Placeholder for the actual game loop — press Enter to return to menu
         ConsoleHelper.getInput("Press Enter to end demo game and return to the menu...");
 
-         System.out.println(p1Name + "'s Ocean:");
-        if (player1 != null && player1.getOceanGrid() != null) {
-            player1.getOceanGrid().printGrid();
-        } else {
-            System.out.println("(no ocean grid available)");
-        }
-
-        System.out.println("\n" + p1Name + "'s Target:");
+        // Print Target first (so player's view shows target above ocean)
+        System.out.println(p1Name + "'s Target:");
         if (player1 != null && player1.getTargetGrid() != null) {
-            player1.getTargetGrid().printGrid();
+            player1.getTargetGrid().printColoredCompact(false);
         } else {
             System.out.println("(no target grid available)");
+        }
+
+        System.out.println("\n" + p1Name + "'s Ocean:");
+        if (player1 != null && player1.getOceanGrid() != null) {
+            // use the compact colored renderer for final product
+            player1.getOceanGrid().printColoredCompact(true);
+        } else {
+            System.out.println("(no ocean grid available)");
         }
     }
 
