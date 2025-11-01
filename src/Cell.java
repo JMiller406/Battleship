@@ -27,7 +27,8 @@ public class Cell {
     }
 
     public void setState(CellState state) {
-        if (state == CellState.SUNK) {
+        // Prevent changing a cell that's already sunk
+        if (this.state == CellState.SUNK) {
             throw new IllegalArgumentException("Cannot change state of a SUNK cell");
         }
         this.state = state;

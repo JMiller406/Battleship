@@ -7,10 +7,7 @@ public abstract class Grid {
     private static final String BG_YELLOW = "\u001B[48;5;226m"; // miss
     private static final String BG_MAGENTA = "\u001B[48;5;201m"; // sunk
 
-    // Map a CellState to an ANSI background color. Accepts the real
-    // CellState enum so it matches the game's model (was previously a
-    // char-based helper used by the demo). Using CellState avoids
-    // mismatches between demo symbols and the real cell symbols.
+   
     private static String bgFor(CellState state, boolean showShips) {
         if (state == null) return BG_LIGHT_BLUE;
         switch (state) {
@@ -41,25 +38,7 @@ public abstract class Grid {
         }
     }
 
-/**
- * Legacy text renderer — preserved for backward compatibility.
- *
- * NOTE: This method is kept to avoid breaking existing callers. Prefer
- * using {@link #printColoredCompact(boolean)} for the compact colored output.
- */
-// Legacy renderer removed — compact colored renderer is the canonical output now.
 
-/**
- * Legacy horizontal border builder used by the original text renderer.
- * Kept for compatibility; not used by the compact colored renderer.
- */
-// Legacy border builder removed.
-
-/**
- * Legacy row builder used by the original text renderer.
- * Kept for compatibility; not used by the compact colored renderer.
- */
-// Legacy row builder removed.
 
        public Cell cellAtCoordinate(Coordinate coord) {
         if (coord == null) {
@@ -73,21 +52,13 @@ public abstract class Grid {
         return cells[r][c];
     }
 
-    /**
-     * Print the grid. Default now delegates to the compact colored renderer.
-     * For OceanGrid, ships are revealed; for other grids (e.g. TargetGrid)
-     * ships are hidden.
-     */
+
     public void printGrid() {
         boolean showShips = (this instanceof OceanGrid);
         printColoredCompact(showShips);
     }
    
-    /**
-     * Compact colored renderer. Prints a compact, two-space filled cell grid using ANSI background colors.
-     * This is non-destructive: original toString()/printGrid() remain unchanged.
-     * @param showShips true to reveal ships (Ocean), false to hide them (Target)
-     */
+    
     public void printColoredCompact(boolean showShips) {
         final String RESET_LOCAL = RESET;
 
@@ -105,11 +76,12 @@ public abstract class Grid {
 
         for (int r = 0; r < 10; r++) {
             sb.append(String.format(" %c |", (char)('A' + r)));
-            for (int c = 0; c < 10; c++) {
-                Cell cell = cells[r][c];
-                String bg = bgFor(cell.getState(), showShips);
-                sb.append(bg).append("  ").append(RESET_LOCAL).append("|");
-            }
+                for (int c = 0; c < 10; c++) {
+                    Cell cell = cells[r][c];
+                    String bg = bgFor(cell.getState(), showShips);
+                    // Only render background color; do not show any symbol/letter.
+                    sb.append(bg).append("  ").append(RESET_LOCAL).append("|");
+                }
             sb.append('\n');
         }
 
