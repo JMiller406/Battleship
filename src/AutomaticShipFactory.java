@@ -1,16 +1,13 @@
-import java.util.Random;
-
 public class AutomaticShipFactory extends ShipFactory {
-    // private final Random rand = new Random();
+
 
     @Override
     protected Coordinate getStartCoordinate(Ship ship) {
-        // changed to randoCoordinate
-        return Coordinate.randoCoordinate();
+        return Coordinate.randomCoordinate();
     }
 
     @Override
-    protected Direction getDirection() {
+    protected Direction getStartDirection() {
         return Direction.randomDirection();
     }
 }

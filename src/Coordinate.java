@@ -40,7 +40,7 @@ public class Coordinate {
         return row;
     }
 
-    public static Coordinate randoCoordinate() {
+    public static Coordinate randomCoordinate() {
         try {
             return new Coordinate((int) (Math.random() * 10.0), (int) (Math.random() * 10.0));
         } catch (Exception e) {
@@ -57,8 +57,10 @@ public class Coordinate {
         return col;
     }
 
-    public List<Coordinate> coordsInDirectiCoordinates(int length, Direction direction) throws Exception {
+    public List<Coordinate> coordsInDirection(int length, Direction direction) throws Exception {
         List<Coordinate> retVal = new ArrayList<>();
+        retVal.add(this); 
+
         for (int i = 1; i < length; i++) {
             int nextRow = retVal.get(i - 1).getRow();
             int nextCol = retVal.get(i + 1).getCol();
