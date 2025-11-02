@@ -5,8 +5,8 @@ public class AutomaticShipFactory extends ShipFactory {
 
     @Override
     protected Coordinate getStartCoordinate(Ship ship) {
-
-        return Coordinate.randomCoordinate();
+        // changed to randoCoordinate
+        return Coordinate.randoCoordinate();
     }
 
     @Override
