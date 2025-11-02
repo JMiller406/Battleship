@@ -21,16 +21,33 @@ public class Player {
     }
 
     protected void takeShot() {
+        // focus on
 
     }
 
-    protected void receiveShot() {
+    protected Coordinate receiveShot(ShotResult ShotResult) {
+        return ShotResult.getShot();
 
     }
 
-    protected void receiveShotResult() {
-
+    protected ShotResult receiveShotResult(ShotResult shotResult) {
+        switch (shotResult.getType()) {
+            case HIT:
+                // Update game state, notify player, etc.
+                System.out.println("Hit registered!");
+                break;
+            case MISS:
+                System.out.println("Missed shot.");
+                break;
+            case SUNK:
+                System.out.println("Ship sunk!");
+                break;
+        }
+    
+        return shotResult;
     }
+    
+    
 
     protected boolean areAllShipsSunk() {
 
