@@ -63,7 +63,7 @@ public class Coordinate {
 
         for (int i = 1; i < length; i++) {
             int nextRow = retVal.get(i - 1).getRow();
-            int nextCol = retVal.get(i + 1).getCol();
+            int nextCol = retVal.get(i - 1).getCol();
             switch (direction) {
                 case NORTH -> nextRow -= 1;
                 case SOUTH -> nextRow += 1;

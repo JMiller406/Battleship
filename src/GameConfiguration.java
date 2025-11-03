@@ -22,7 +22,18 @@ public class GameConfiguration {
 
         Player player1 = new Player(p1Name); // new Player(p1Name);
         Player player2 = new Player(p2Name); // new Player(p2Name);
-        
+
+        // If auto-placement requested, generate and assign ships for both players
+        if (placementPreference == 1) {
+            ShipFactory factory1 = new AutomaticShipFactory();
+            java.util.List<Ship> p1Ships = factory1.getShips(factory1.getShipsSortedByLength(Order.DESC));
+            player1.getOceanGrid().assignShips(p1Ships);
+
+            ShipFactory factory2 = new AutomaticShipFactory();
+            java.util.List<Ship> p2Ships = factory2.getShips(factory2.getShipsSortedByLength(Order.DESC));
+            player2.getOceanGrid().assignShips(p2Ships);
+        }
+
         return new Game(player1, player2, aiDifficulty, placementPreference);
 
         
