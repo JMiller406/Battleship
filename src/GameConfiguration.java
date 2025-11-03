@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class GameConfiguration {
 
     public static Game configure() {
@@ -6,7 +8,7 @@ public class GameConfiguration {
         int players = askOneOrTwoPlayers();
         String p1Name = getNameForPlayerNumber(1);
         String p2Name = (players == 2) ? getNameForPlayerNumber(2) : "Computer";
-        int aiDifficulty = (players ==1) ? askAIDifficulty() : -1;
+        int aiDifficulty = (players == 1) ? askAIDifficulty() : -1;
         String aiDifficultyName = (aiDifficulty > 0) ? difficultyName(aiDifficulty) : "N/A";
         if (players == 1 && aiDifficulty > 0) {
             System.out.println("Selected AI difficulty: " + aiDifficultyName);
@@ -15,7 +17,8 @@ public class GameConfiguration {
 
         System.out.println("\nConfiguration Summary:");
         System.out.println("Players: " + players + " (" + p1Name + (players == 2 ? " vs " + p2Name : " vs AI") + ")");
-    if (players == 1) System.out.println("AI Difficulty: " + aiDifficultyName);
+        if (players == 1)
+            System.out.println("AI Difficulty: " + aiDifficultyName);
         System.out.println("Ship Placement: " + (placementPreference == 1 ? "Auto" : "Manual"));
 
         ConsoleHelper.getInput("Press Enter to continue...");
@@ -25,19 +28,27 @@ public class GameConfiguration {
 
         // If auto-placement requested, generate and assign ships for both players
         if (placementPreference == 1) {
-            ShipFactory factory1 = new AutomaticShipFactory();
-            java.util.List<Ship> p1Ships = factory1.getShips(factory1.getShipsSortedByLength(Order.DESC));
-            player1.getOceanGrid().assignShips(p1Ships);
-
-            ShipFactory factory2 = new AutomaticShipFactory();
-            java.util.List<Ship> p2Ships = factory2.getShips(factory2.getShipsSortedByLength(Order.DESC));
-            player2.getOceanGrid().assignShips(p2Ships);
+            placeShipAutomatically(player1);
+            // placeShipAutomatically(player2);
+        } else {
+            placeShipManually(player1);
+            // placeShipManually(player2);
         }
 
         return new Game(player1, player2, aiDifficulty, placementPreference);
 
-        
+    }
 
+    private static void placeShipAutomatically(Player player) {
+        ShipFactory factory = new AutomaticShipFactory();
+        List<Ship> ships = factory.getShips(factory.getShipsSortedByLength(Order.DESC));
+        player.getOceanGrid().assignShips(ships);
+    }
+
+    public static void placeShipManually(Player player) {
+        ShipFactory factory = new ManualShipFactory();
+        List<Ship> ships = factory.getShips(factory.getShipsSortedByLength(Order.DESC));
+        player.getOceanGrid().assignShips(ships);
     }
 
     public static int askOneOrTwoPlayers() {
@@ -68,17 +79,16 @@ public class GameConfiguration {
         return ConsoleHelper.getNumberBetween("Enter your choice (1-3): ", 1, 3);
     }
 
-
-
-
-
-
     private static String difficultyName(int difficulty) {
         switch (difficulty) {
-            case 1: return "Easy";
-            case 2: return "Normal";
-            case 3: return "Hard";
-            default: return "Unknown";
+            case 1:
+                return "Easy";
+            case 2:
+                return "Normal";
+            case 3:
+                return "Hard";
+            default:
+                return "Unknown";
         }
     }
 

@@ -2,8 +2,8 @@ public class Player {
     String name;
     TargetGrid targetGrid;
     OceanGrid oceanGrid;
-    int hitCount; //the amount of hits call it game
-    
+    int hitCount; // the amount of hits call it game
+
     // constructor used by GameConfiguration
     public Player(String name) {
         this.name = (name == null || name.isEmpty()) ? "Player" : name;
@@ -16,14 +16,25 @@ public class Player {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     protected void placeShips() {
 
     }
 
-    protected void takeShot() {
-        // focus on
+    // protected void takeShot() {
+    //     while(true) {
+    //         String input = ConsoleHelper.getInput("Enter a shot coordinate (A1-J10)");
+    //         try{
+    //             Coordinate target = new Coordinate(input);
 
-    }
+    //             if(targetGrid.)
+    //         }
+    //     }
+
+    // }
 
     protected Coordinate receiveShot(ShotResult ShotResult) {
         return ShotResult.getShot();
@@ -43,11 +54,9 @@ public class Player {
                 System.out.println("Ship sunk!");
                 break;
         }
-    
+
         return shotResult;
     }
-    
-    
 
     protected boolean areAllShipsSunk() {
 
@@ -63,12 +72,7 @@ public class Player {
         return targetGrid;
     }
 
-
-
-
-
-
-
 }
+
 
 
