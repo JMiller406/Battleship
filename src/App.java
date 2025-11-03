@@ -1,8 +1,7 @@
 public class App {
     public static void main(String[] args) {
+        PrintTitle.printTitle();
         Menu menu = new Menu();
-
-        // Place title here if we have time
 
         while (true) {
             Menu.MenuAction action = menu.displayMenu();
