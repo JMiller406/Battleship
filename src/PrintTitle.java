@@ -1,3 +1,4 @@
+// import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class PrintTitle {
@@ -24,6 +25,8 @@ public static void printTitle() {
                                                                                                                                                                 created by Red Team
             """
     };
+    //Bug when you open the tabs on the left it will mess up the title. will work if the left is closed. DO NOT USE THIS CODE
+    // Arrays.asList(titleLines).forEach(line -> slowPrint(line + "\n"));
 
     for (String line : titleLines) {
         slowPrint(line + "\n");
@@ -31,7 +34,7 @@ public static void printTitle() {
     }
 
     private static void slowPrint(String output) {
-        for (int i = 0; i<output.length(); i ++) {
+        for (int i = 0; i < output.length(); i ++) {
             char c = output.charAt(i);
             System.out.print(c);
             try {
@@ -43,5 +46,3 @@ public static void printTitle() {
         }
     }
 }
-
-

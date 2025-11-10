@@ -36,12 +36,12 @@ public class Player {
 
     // }
 
-    protected Coordinate receiveShot(ShotResult ShotResult) {
+    public Coordinate receiveShot(ShotResult ShotResult) {
         return ShotResult.getShot();
 
     }
 
-    protected ShotResult receiveShotResult(ShotResult shotResult) {
+    public ShotResult receiveShotResult(ShotResult shotResult) {
         switch (shotResult.getType()) {
             case HIT:
                 // Update game state, notify player, etc.
@@ -73,7 +73,6 @@ public class Player {
     }
 
 }
-
 
 
 

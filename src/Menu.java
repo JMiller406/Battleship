@@ -1,5 +1,5 @@
 public class Menu {
-    
+
     // scoped enum since only menu uses it
     public enum MenuAction {
         START_GAME,
@@ -10,17 +10,21 @@ public class Menu {
         // convert int choice to enum
         static MenuAction fromInt(int choice) {
             switch (choice) {
-                case 1: return START_GAME;
-                case 2: return TUTORIAL;
-                case 3: return EXIT;
-                default: return INVALID;
+                case 1:
+                    return START_GAME;
+                case 2:
+                    return TUTORIAL;
+                case 3:
+                    return EXIT;
+                default:
+                    return INVALID;
             }
         }
     }
 
     // displayMenu() shows the menu and gets user choice
     public MenuAction displayMenu() {
-        System.out.println("=== Battleship Menu ===");
+        System.out.println("=== " + Grid.U_RED + "Battleship" + Grid.RESET + " " + Grid.U_BLUE + "Menu" + Grid.RESET + " ===");
         System.out.println("1. Start Game");
         System.out.println("2. Tutorial");
         System.out.println("3. Exit");
@@ -35,7 +39,7 @@ public class Menu {
 
     // exit() App should handle actual lifecycle/termination
     // public void exit() {
-    //     System.out.println("Menu.exit() called. App should perform shutdown.");
+    // System.out.println("Menu.exit() called. App should perform shutdown.");
     // }
 
     // optional tutorial placeholder (iteration 1: not implemented)
