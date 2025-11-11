@@ -46,8 +46,7 @@ public class Shot {
 
     // Static method to prompt user for a shot coordinate and return a Shot object
     public static Shot getShotInput() {
-        System.out.print("Enter your shot (e.g., B5): ");
-        String input = ConsoleHelper.getInput(System.in.toString());
+        String input = ConsoleHelper.getInput("Enter your shot (e.g., B5): ");
 
         try {
             return new Shot(input);

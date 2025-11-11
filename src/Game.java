@@ -49,6 +49,17 @@ public class Game {
         } else {
             System.out.println("(no ocean grid available)");
         }
+
+        // Prompt player for a single shot (demo wiring of Shot.getShotInput)
+        System.out.println();
+        System.out.println(p1Name + ", take your shot:");
+        Shot shot = Shot.getShotInput();
+        try {
+            Coordinate c = new Coordinate(shot.getCoordinate());
+            System.out.println("You fired at " + c);
+        } catch (Exception e) {
+            System.out.println("Failed to parse shot coordinate: " + e.getMessage());
+        }
     }
 
 }
