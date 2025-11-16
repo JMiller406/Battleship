@@ -8,6 +8,18 @@ public class OceanGrid extends Grid {
         super();
     }
 
+    /**
+     * Return true when all assigned ships are sunk.
+     * If no ships have been assigned, returns false.
+     */
+    public boolean areAllShipsSunk() {
+        if (ships == null || ships.isEmpty()) return false;
+        for (Ship s : ships) {
+            if (!s.isSunk()) return false;
+        }
+        return true;
+    }
+
     // Do not need at the moment
     // public void  recieveShotResult() {
     //     // recieves the shot result here

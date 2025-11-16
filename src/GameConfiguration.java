@@ -23,16 +23,25 @@ public class GameConfiguration {
 
         ConsoleHelper.getInput("Press Enter to continue...");
 
-        Player player1 = new Player(p1Name); // new Player(p1Name);
-        Player player2 = new Player(p2Name); // new Player(p2Name);
+        // If user selected Normal or Hard, inform them now that only Easy is implemented and fall back.
+        if (players == 1 && aiDifficulty > 1) {
+            String level = (aiDifficulty == 2) ? "Normal" : "Hard";
+            ConsoleHelper.getInput("AI difficulty '" + level + "' is not implemented yet. Press Enter to continue using Easy AI behavior...");
+            aiDifficulty = 1; // force Easy for current session
+            aiDifficultyName = "Easy";
+        }
+
+    Player player1 = new Player(p1Name); // new Player(p1Name);
+    // If single-player, make player2 an AI so Game.start() can auto-play for the computer
+    Player player2 = (players == 1) ? new AiDifficulty(p2Name, aiDifficulty) : new Player(p2Name);
 
         // If auto-placement requested, generate and assign ships for both players
         if (placementPreference == 1) {
             placeShipAutomatically(player1);
-            // placeShipAutomatically(player2);
+            placeShipAutomatically(player2);
         } else {
             placeShipManually(player1);
-            // placeShipManually(player2);
+            placeShipManually(player2);
         }
 
         return new Game(player1, player2, aiDifficulty, placementPreference);
@@ -76,7 +85,13 @@ public class GameConfiguration {
         System.out.println("1. Easy");
         System.out.println("2. Normal");
         System.out.println("3. Hard");
-        return ConsoleHelper.getNumberBetween("Enter your choice (1-3): ", 1, 3);
+        int val = ConsoleHelper.getNumberBetween("Enter your choice (1-3): ", 1, 3);
+        if (val > 1) {
+            String level = (val == 2) ? "Normal" : "Hard";
+            ConsoleHelper.getInput("AI difficulty '" + level + "' is not implemented yet. Press Enter to continue using Easy AI behavior...");
+            return 1; // fallback to Easy immediately
+        }
+        return val;
     }
 
     private static String difficultyName(int difficulty) {
