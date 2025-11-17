@@ -44,7 +44,6 @@ public class Menu {
 
     // optional tutorial placeholder (iteration 1: not implemented)
     public void startTutorial() {
-        System.out.println("Tutorial is not available in this iteration.");
-        ConsoleHelper.getInput("Press Enter to return to the menu...");
+        Tutorial.run();
     }
 }
