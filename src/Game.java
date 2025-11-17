@@ -127,56 +127,7 @@ public class Game {
      * Resolve a shot from shooter to target at coord.
      * Updates target's OceanGrid and shooter's TargetGrid and returns a ShotResult.
      */
-    private ShotResult processShot(Player shooter, Player target, Coordinate coord) {
-        ShotResult.ResultType type = ShotResult.ResultType.MISS;
-        ShotResult result = null;
-
-        Cell targetCell = target.getOceanGrid().cellAtCoordinate(coord);
-
-        if (targetCell.hasShip()) {
-            Ship ship = targetCell.getShip();
-            ship.registerHit(coord);
-            if (ship.isSunk()) {
-                // mark all ship cells as SUNK on the target's ocean
-                for (Coordinate c : ship.getCoords()) {
-                    Cell sc = target.getOceanGrid().cellAtCoordinate(c);
-                    sc.setState(CellState.SUNK);
-                }
-                type = ShotResult.ResultType.SUNK;
-                // increment shooter's hit count for sunk
-                shooter.hitCount++;
-
-                // Update shooter's target grid for every coordinate of the sunk ship
-                for (Coordinate c : ship.getCoords()) {
-                    ShotResult r = new ShotResult(ShotResult.ResultType.SUNK, c);
-                    r.setShipName(ship.getName());
-                    shooter.getTargetGrid().recieveShotResult(r);
-                }
-
-                result = new ShotResult(type, coord);
-                result.setShipName(ship.getName());
-                return result;
-            } else {
-                targetCell.setState(CellState.HIT);
-                type = ShotResult.ResultType.HIT;
-                // increment shooter's hit count
-                shooter.hitCount++;
-
-                result = new ShotResult(type, coord);
-                // Inform shooter target grid of result
-                shooter.getTargetGrid().recieveShotResult(result);
-                return result;
-            }
-        } else {
-            targetCell.setState(CellState.MISS);
-            type = ShotResult.ResultType.MISS;
-
-            result = new ShotResult(type, coord);
-            // Inform shooter target grid of result
-            shooter.getTargetGrid().recieveShotResult(result);
-            return result;
-        }
-    }
+    // Shot resolution is handled centrally in Shot.processShot(...).
 
     private void displayShotResult(ShotResult result, String attackerName, String defenderName) {
         System.out.println("\n========== SHOT RESULT ==========");
