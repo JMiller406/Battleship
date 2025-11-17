@@ -6,6 +6,8 @@ public abstract class Grid {
     public static final String BG_GREY = "\u001B[100m"; // occupied (ship)
     public static final String BG_RED = "\u001B[48;5;196m"; // hit
     public static final String BG_YELLOW = "\u001B[48;5;226m"; // sunk
+    public static final String BG_WHITE = "\u001B[47m"; // miss background (white)
+    public static final String BG_BLACK = "\u001B[40m"; // miss background (black)
 
     // Menu Colors
     public static final String U_RED = "\u001B[4;31m"; // underline red
@@ -24,7 +26,7 @@ public abstract class Grid {
             case HIT:
                 return BG_RED;
             case MISS:
-                return RESET;
+                return BG_BLACK;
             case SUNK:
                 return BG_YELLOW;
             case OCCUPIED:

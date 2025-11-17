@@ -56,6 +56,51 @@ public class Shot {
         }
     }
 
+    /**
+     * Central shot resolver. Moves shot resolution out of Game so other flows can call it.
+     */
+    public static ShotResult processShot(Player shooter, Player target, Coordinate coord) {
+        Cell targetCell = target.getOceanGrid().cellAtCoordinate(coord);
+
+        if (targetCell.hasShip()) {
+            Ship ship = targetCell.getShip();
+            ship.registerHit(coord);
+            if (ship.isSunk()) {
+                // mark all ship cells as SUNK on the target's ocean
+                for (Coordinate c : ship.getCoords()) {
+                    Cell sc = target.getOceanGrid().cellAtCoordinate(c);
+                    sc.setState(CellState.SUNK);
+                }
+                // increment shooter's hit count for sunk
+                shooter.hitCount++;
+
+                // Update shooter's target grid for every coordinate of the sunk ship
+                for (Coordinate c : ship.getCoords()) {
+                    ShotResult r = new ShotResult(ShotResult.ResultType.SUNK, c);
+                    r.setShipName(ship.getName());
+                    shooter.getTargetGrid().recieveShotResult(r);
+                }
+
+                ShotResult result = new ShotResult(ShotResult.ResultType.SUNK, coord);
+                result.setShipName(ship.getName());
+                return result;
+            } else {
+                targetCell.setState(CellState.HIT);
+                // increment shooter's hit count
+                shooter.hitCount++;
+
+                ShotResult result = new ShotResult(ShotResult.ResultType.HIT, coord);
+                shooter.getTargetGrid().recieveShotResult(result);
+                return result;
+            }
+        } else {
+            targetCell.setState(CellState.MISS);
+            ShotResult result = new ShotResult(ShotResult.ResultType.MISS, coord);
+            shooter.getTargetGrid().recieveShotResult(result);
+            return result;
+        }
+    }
+
     
 
 }

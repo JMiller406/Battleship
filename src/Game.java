@@ -25,86 +25,102 @@ public class Game {
     }
 
     public void start() {
-        // not used for Jason's purposes but don't want to break anything
-        String p1Name = (player1 != null) ? player1.getName() : "Player1";
-        String p2Name = (player2 != null) ? player2.getName() : "Player2";
-        // I don't have any logic implemeted for a two player game yet so it might act unexpectedly if both players are human
+        String p1Name = player1.getName();
+        String p2Name = player2.getName();
 
-        System.out.println("[Game] Starting game");
-        // Simple alternating turn loop between player1 and player2.
-        // Human players should use Shot.getShotInput(); AiPlayer will pick random untried shots.
-        Player current = player1;
-        Player other = player2;
+        System.out.println("[Starting Game] The War has started! " + p1Name + " vs " + p2Name);
+        ConsoleHelper.getInput("Press Enter to begin...");
 
+        Player currentPlayer = player1;
+        Player opponentPlayer = player2;
+
+        // Main game loop
         while (true) {
-            if (current == null || other == null) break;
+            clearScreen();
 
-            System.out.println("\n--- " + current.getName() + "'s turn ---");
+            System.out.println("\n======================================");
+            System.out.println("       " + currentPlayer.getName() + "'s Turn");
+            System.out.println("======================================\n");
 
-            Coordinate coord = null;
+            // Print grids only for human players. Never display AI's ocean/target grids.
+            if (!(currentPlayer instanceof AiPlayer)) {
+                // Print Target first (so player's view shows target above ocean)
+                System.out.println(currentPlayer.getName() + "'s Target Grid (Your Shots)");
+                currentPlayer.getTargetGrid().printColoredCompact(false);
 
-            if (current instanceof AiPlayer) {
-                AiPlayer ai = (AiPlayer) current;
-                coord = ai.chooseRandomUntestedCoordinate();
-                if (coord == null) {
-                    System.out.println("AI couldn't find a move; exiting.");
+                // Print Ocean Grid last
+                System.out.println("\n" + currentPlayer.getName() + "'s Ocean Grid (Your Ships)");
+                currentPlayer.getOceanGrid().printColoredCompact(true);
+            } else {
+                System.out.println(currentPlayer.getName() + "'s turn (computer).\n");
+            }
+
+            // Keep asking for shot until valid (not a duplicate)
+            ShotResult result = null;
+            while (result == null) {
+                // If AI, pick and resolve a move automatically
+                if (currentPlayer instanceof AiPlayer) {
+                    AiPlayer ai = (AiPlayer) currentPlayer;
+                    Coordinate shotCoord = ai.chooseRandomUntestedCoordinate();
+                    if (shotCoord == null) {
+                        System.out.println("AI couldn't find a move; skipping turn.");
+                        break;
+                    }
+                    result = Shot.processShot(currentPlayer, opponentPlayer, shotCoord);
                     break;
                 }
-                System.out.println(current.getName() + " fires at " + coord);
-            } else {
-                // human: prompt until a valid, untried coordinate is entered
-                while (coord == null) {
-                    System.out.println(current.getName() + ", take your shot:");
-                    Shot shot = Shot.getShotInput();
-                    try {
-                        Coordinate c = new Coordinate(shot.getCoordinate());
-                        Cell tcell = current.getTargetGrid().cellAtCoordinate(c);
-                        if (tcell.getState() != CellState.EMPTY) {
-                            System.out.println("You already fired at " + c + ". Try again.");
-                            continue;
-                        }
-                        coord = c;
-                    } catch (Exception e) {
-                        System.out.println("Invalid coordinate: " + e.getMessage());
-                    }
+
+                // Human player's input
+                System.out.println(
+                        "\n" + currentPlayer.getName() + ", take your shot at " + opponentPlayer.getName() + ":");
+                Shot shot = Shot.getShotInput();
+
+                try {
+                    Coordinate shotCoord = new Coordinate(shot.getCoordinate());
+
+                    // resolve the shot using the central Shot resolver
+                    result = Shot.processShot(currentPlayer, opponentPlayer, shotCoord);
+
+                } catch (Exception e) {
+                    System.out.println("\nX " + e.getMessage());
+                    System.out.println("Please try again.\n");
+                    // result stays null, loop continues
                 }
             }
+            // Shot validation loop ends here
 
-            ShotResult result = processShot(current, other, coord);
-            // show result and the shooter's target view
-            System.out.println("Result: " + result.getType() + (result.getShipName() != null ? (" ("+result.getShipName()+")") : ""));
-            System.out.println(current.getName() + "'s Target Grid:");
-            current.getTargetGrid().printColoredCompact(false);
+            // Display the result 
+            displayShotResult(result, currentPlayer.getName(), opponentPlayer.getName());
 
-            // If the shooter was a human, wait for them to press Enter so they can view the result
-            if (!(current instanceof AiPlayer)) {
-                ConsoleHelper.getInput("Press Enter to continue to the next turn...");
+            // Check if opponent lost (all ships sunk)
+            if (opponentPlayer.getOceanGrid().areAllShipsSunk()) {
+                clearScreen();
+                System.out.println("\n");
+                System.out.println("╔════════════════════════════════════╗");
+                System.out.println("║                                    ║");
+                System.out.println("║         WAR IS OVER!               ║");
+                System.out.println("║                                    ║");
+                System.out.println("║  " + currentPlayer.getName() + " WINS!                       ║");
+                System.out.println("║                                    ║");
+                System.out.println("║  All of " + opponentPlayer.getName() + "'s ships              ║");
+                System.out.println("║  have been sunk!                   ║");
+                System.out.println("║                                    ║");
+                System.out.println("╚════════════════════════════════════╝");
+                System.out.println();
+                break; // Exit the main game loop
             }
 
-            // Check for end of game: did the defender lose all ships?
-            if (other.getOceanGrid().areAllShipsSunk()) {
-                System.out.println();
-                System.out.println("*** " + current.getName() + " wins! ***");
+            // Pause before switching to next player
+            ConsoleHelper.getInput("\nPress Enter to end your turn...");
 
-                // show final boards: winner's target and loser's ocean (with ships visible)
-                System.out.println(current.getName() + "'s Target Grid:");
-                current.getTargetGrid().printColoredCompact(false);
-
-                System.out.println(other.getName() + "'s Ocean Grid (final):");
-                other.getOceanGrid().printColoredCompact(true);
-
-                // simple stats
-                System.out.println();
-                System.out.println("Final stats:");
-                System.out.println(current.getName() + " hits: " + current.hitCount);
-
-                ConsoleHelper.getInput("Press Enter to return to the menu...");
-                return; // exit the game loop and return to menu
-            }
-
-            // swap turns
-            Player tmp = current; current = other; other = tmp;
+            // Switch players
+            Player temp = currentPlayer;
+            currentPlayer = opponentPlayer;
+            opponentPlayer = temp;
         }
+        // Main game loop ends here
+
+        ConsoleHelper.getInput("\nPress Enter to return to main menu...");
     }
 
     /**
@@ -159,6 +175,29 @@ public class Game {
             // Inform shooter target grid of result
             shooter.getTargetGrid().recieveShotResult(result);
             return result;
+        }
+    }
+
+    private void displayShotResult(ShotResult result, String attackerName, String defenderName) {
+        System.out.println("\n========== SHOT RESULT ==========");
+
+        switch (result.getType()) {
+            case HIT:
+                System.out.println("HIT! " + attackerName + " hit " + defenderName + "'s ship at " + result.getShot() + "!");
+                break;
+            case MISS:
+                System.out.println("MISS... " + attackerName + " missed at " + result.getShot() + ".");
+                break;
+            case SUNK:
+                System.out.println("SUNK! " + attackerName + " SUNK " + defenderName + "'s " + result.getShipName() + "!");
+                break;
+        }
+        System.out.println("=================================\n");
+    }
+
+    public void clearScreen() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
         }
     }
 
