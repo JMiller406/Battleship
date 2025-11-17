@@ -38,7 +38,7 @@ public class Tutorial {
 
             System.out.println("This is an example Target grid (what you see when firing):");
             demoTarget.printColoredCompact(false);
-            System.out.println("Red = hits, Grey = miss, yellow = sunk, Blue = water. (Colors may vary by terminal.)");
+            System.out.println("Red = hits, Black = miss, yellow = sunk, Blue = water. (Colors may vary by terminal.)");
             ConsoleHelper.getInput("Press Enter to try firing a sample shot...");
 
             // Let the user enter a sample shot and show result based on demoOcean
